@@ -13,5 +13,6 @@ jobs:
         
       - name: Build and Push
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/geofence-backend:latest ./backend
+          # Yahan ./backend ki jagah sirf . (dot) aayega
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/geofence-backend:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/geofence-backend:latest

@@ -11,7 +11,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/rs/cors"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -29,7 +28,7 @@ func sendJSON(w http.ResponseWriter, start time.Time, data map[string]interface{
 func main() {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	var err error
-	// MongoDB Atlas URI yahan daalein
+	// MongoDB Atlas URI
 	client, err = mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://sangeetamishra8863_db_user:wUCyoYAdMNIJMUo2@cluster0.wkf9zx4.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil { log.Fatal(err) }
 
@@ -54,7 +53,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }
 
-// Implementations (Briefly)
+// Implementations
 func handleGeofences(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	coll := client.Database("geofence_db").Collection("geofences")
@@ -91,7 +90,6 @@ func handleLocation(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, start, map[string]interface{}{"location_updated": true, "current_geofences": fences})
 }
 
-// Baki endpoints ke liye empty arrays bhej dena taaki error na aaye
 func handleVehicles(w http.ResponseWriter, r *http.Request) { sendJSON(w, time.Now(), map[string]interface{}{"vehicles": []string{}}) }
 func handleGetVehicleLocation(w http.ResponseWriter, r *http.Request) { sendJSON(w, time.Now(), map[string]interface{}{"status": "active"}) }
 func handleAlertConfig(w http.ResponseWriter, r *http.Request) { sendJSON(w, time.Now(), map[string]interface{}{"status": "configured"}) }
